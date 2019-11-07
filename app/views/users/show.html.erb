@@ -1,1 +1,11 @@
+<h1><%=@user.username%></h1>
+
+<h2>Comments:</h2>
+<%@posts.each do |post|%>
+  <%=link_to post.title, post%><br>
+  <%@comments.select{|c| c.post==post}.each do |comment|%>
+  "<%=comment.content%>"
+  <br>
+  <%end%>
+<%end%>
 

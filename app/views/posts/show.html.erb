@@ -1,1 +1,37 @@
+<h1><%=@post.title%></h1>
+<br>
+<%=@post.content%>
+<br><br>
 
+
+<h4>Tags:</h4>
+<%@post.categories.each do |c|%>
+  <%=link_to c.name, c%> 
+<%end%>
+<br><br>
+
+<h2>Comments:</h2>
+<%@users.each do |user|%>
+  <%=link_to user.username, user%> says: 
+  <%@comments.select{|c| c.user == user && c.post == @post}.each do |comment|%>
+    <%=comment.content%>
+    <br>
+  <%end%>
+  <br>
+<%end%>
+<br><br>
+
+<h2>Post a Comment:</h2>
+<%=form_for @post.comments.build do |f|%>
+    <%=f.hidden_field :post_id%>
+    <%=f.collection_select :user_id, User.all, :id, :username%>
+    <%=f.fields_for :user, User.new do |att|%>
+      <%=att.label :username, "Username:"%>
+      <%=att.text_field :username%>
+    <%end%>
+    <br>
+    <%=f.label :content, "Comment:"%>
+    <br>
+    <%=f.text_area :content%>
+    <%=f.submit%>
+<%end%>
